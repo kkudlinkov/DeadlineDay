@@ -14,9 +14,8 @@ const Task = sequelize.define('tasks', {
     title: {type: DataTypes.STRING, allowNull: false},
     description: {type: DataTypes.STRING, allowNull: false},
     status: {type: DataTypes.STRING, allowNull: false, defaultValue: 'New'},
-    created_at: {type: DataTypes.DATE, allowNull: false},
     deadline_at: {type: DataTypes.DATE, allowNull: false},
-    priority: {type: DataTypes.INTEGER, allowNull: false},
+    priority: {type: DataTypes.INTEGER, allowNull: false, defaultValue: 1},
 })
 
 const Category = sequelize.define('categories', {
