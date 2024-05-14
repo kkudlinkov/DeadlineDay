@@ -8,6 +8,8 @@ import {check} from "./http/userAPI";
 import {setIsAuth, setUser} from "./store/authSlice";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+import {getTasks} from "./http/tasksApi";
+import {setTasks} from "./store/taskSlice";
 
 function App() {
     const dispatch = useDispatch();
@@ -18,10 +20,11 @@ function App() {
         if (token) {
             setTimeout(async () => {
                 try {
-                    const data = await check();
+                    const userData = await check();
+                    const tasksData = await getTasks();
                     dispatch(setIsAuth(true));
-                    dispatch(setUser(data));
-                    console.log(data)
+                    dispatch(setUser(userData));
+                    dispatch(setTasks(tasksData))
                 } catch (error) {
                     // Handle error here, e.g. log user out
                     dispatch(setIsAuth(false));

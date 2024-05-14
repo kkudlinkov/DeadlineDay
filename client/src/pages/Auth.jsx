@@ -8,6 +8,8 @@ import Button from 'react-bootstrap/Button';
 import {login, registration} from "../http/userAPI";
 import {useDispatch} from "react-redux";
 import {setIsAuth, setUser} from "../store/authSlice";
+import {setTasks} from "../store/taskSlice";
+import {getTasks} from "../http/tasksApi";
 
 const Auth = () => {
     const dispatch = useDispatch();
@@ -29,6 +31,8 @@ const Auth = () => {
             dispatch(setIsAuth(true));
             console.log(user)
             dispatch(setUser(user));
+            const tasksData = await getTasks();
+            dispatch(setTasks(tasksData)); // dispatching setTasks action creator
             navigate(MAIN_ROUTE)
         } catch (e){
             alert(e.response.data.message)
