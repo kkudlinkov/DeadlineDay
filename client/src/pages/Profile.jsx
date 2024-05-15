@@ -15,6 +15,7 @@ const Profile = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user)
     const tasks = useSelector(state => state.userTasks.tasks)
+    const categories = useSelector(state => state.userCategories.categories)
 
     const [taskVisible, setTaskVisible] = useState(false)
     const [editTaskVisible, setEditTaskVisible] = useState(false)
@@ -23,6 +24,7 @@ const Profile = () => {
 
     const [editingTask, setEditingTask] = useState(null)
 
+    console.log('profile', categories)
 
     const handleDeleteTask = async (task) => {
         if (window.confirm('Are you sure you want to delete this task?')) {
@@ -77,26 +79,42 @@ const Profile = () => {
                     <Table striped bordered hover>
                         <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Priority</th>
-                            <th>Deadline</th>
-                            <th>Created At</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Имя</th>
+                            <th>Описание</th>
+                            <th>Приоритет</th>
+                            <th>Дедлайн</th>
+                            <th>Создана</th>
+                            <th>Статус</th>
+                            <th>Категория</th>
+                            <th>Действия</th>
                         </tr>
                         </thead>
                         <tbody>
                         {sortedTasks.map((task) => (
                             <tr key={task.id}>
-                                <td>{task.id}</td>
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>
                                 <td>{task.priority}</td>
                                 <td>{moment(task.deadline_at).format('YYYY-MM-DD HH:mm')}</td>
                                 <td>{moment(task.createdAt).format('YYYY-MM-DD HH:mm')}</td>
                                 <td>{task.status}</td>
-                                <td className='d-flex gap-2'>
+                                <td>
+                                    <div className={'d-flex gap-2 align-items-center'}>
+                                        <p className={'m-0'}
+                                        >{categories.find((category) => category.id === task.categoryId)?.name || "Не назначано"}
+                                        </p>
+                                        {task.categoryId && (
+                                            <div style={{
+                                                paddingTop: '0',
+                                                height: '18px',
+                                                width: '18px',
+                                                borderRadius: '50%',
+                                                backgroundColor: `${categories.find((category) => category.id === task.categoryId)?.color}`,
+                                            }}></div>
+                                        )}
+                                    </div>
+                                </td>
+                                <td className='gap-2'>
                                     <Button
                                         onClick={() => {
                                             setEditTaskVisible(true);

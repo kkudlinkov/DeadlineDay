@@ -1,10 +1,10 @@
 const ApiError = require('../error/ApiError')
-const {Category, User} = require('../models/models')
+const {Category, User, Task} = require('../models/models')
 
 class CategoryController {
     async create(req, res, next) {
         try {
-            const {name, color } = req.body;
+            const {name, color} = req.body;
             const userId = req.user.id
             const category = await Category.create({name, color, userId});
             return res.json(category);

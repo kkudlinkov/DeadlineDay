@@ -13,17 +13,21 @@ const categorySlice = createSlice({
         addNewCategory(state, action){
             state.categories.push(action.payload); // adding a new task to the tasks array
         },
-        updateCategory(state, action){
-            const {index, updatedCategories} = action.payload;
-            state.categories[index] = updatedCategories; // updating a task in the tasks array
+        updateUserCategory(state, action){
+            const data = action.payload;
+            const index = state.tasks.findIndex(task => task.id === data.id);
+
+            if (index !== -1) {
+                state.tasks[index] = data;
+            }
         },
-        deleteCategory(state, action){
+        deleteUserCategory(state, action){
             const index = action.payload;
-            state.tasks.splice(index, 1); // deleting a task from the tasks array
+            state.categories.splice(index, 1); // deleting a task from the tasks array
         }
     }
 })
 
-export const {setCategories, addNewCategory, updateCategory, deleteCategory} = categorySlice.actions;
+export const {setCategories, addNewCategory, updateUserCategory, deleteUserCategory} = categorySlice.actions;
 
 export default categorySlice.reducer;

@@ -3,8 +3,11 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {createTask} from "../http/tasksApi";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addNewTask} from "../store/taskSlice";
+import CreateCategory from "./CreateCategory";
+import {deleteUserCategory} from "../store/categorySlice";
+import {deleteCategory} from "../http/categoriesApi";
 
 const CreateTask = ({show, onHide}) => {
     const dispatch = useDispatch();
@@ -12,7 +15,11 @@ const CreateTask = ({show, onHide}) => {
     const [description, setDescription] = useState('')
     const [priority, setPriority] = useState(1)
     const [deadline, setDeadline] = useState('')
-    const [category, setCategory] = useState('')
+    const [category, setCategory] = useState(null)
+    const [categoryVisible, setCategoryVisible] = useState(false)
+
+
+    const categories = useSelector(state => state.userCategories.categories)
 
     const addTask = async () => {
         try {
@@ -21,7 +28,7 @@ const CreateTask = ({show, onHide}) => {
                 description: description,
                 priority: priority,
                 deadline_at: new Date(deadline),
-                category: category,
+                categoryId: category
             };
 
             const response = await createTask(task);
@@ -34,12 +41,27 @@ const CreateTask = ({show, onHide}) => {
                 setDescription('');
                 setPriority(1);
                 setDeadline('');
-                setCategory('');
+                setCategory(null);
             }
         } catch (e) {
             alert(e.response.data.message);
         }
     };
+
+
+    const deleteSelectCategory = async () => {
+        if (window.confirm('Вы уверены что хотите удалить категорию?')) {
+            try {
+                await deleteCategory(category);
+                const index = categories.findIndex((t) => t.id === (parseInt(category)));
+                dispatch(deleteUserCategory(index));
+                alert('Task deleted successfully');
+            } catch (error) {
+                console.error(error);
+                alert('Error deleting task');
+            }
+        }
+    }
 
 
     return (
@@ -83,22 +105,28 @@ const CreateTask = ({show, onHide}) => {
                                       value={deadline}
                                       onChange={e => setDeadline(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group controlId="formCategory">
+                    <Form.Group>
                         <Form.Label>Категория</Form.Label>
-                        <Form.Control as="select"
-                                      value={category}
-                                      onChange={e => setCategory(e.target.value)}>
-                            <option value="cat1">Категория 1</option>
-                            <option value="cat2">Категория 2</option>
-                            <option value="cat3">Категория 3</option>
+                        <Form.Control as="select" value={category || "Select Category"}
+                                      onChange={(e) => setCategory(e.target.value)}>
+                            <option value="">Select Category</option>
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
                         </Form.Control>
+                        <Button variant="primary" className="mr-2" onClick={() => setCategoryVisible(true)}>Добавить
+                            категорию</Button>
+                        <Button variant="danger" className="m-2" onClick={deleteSelectCategory} disabled={!category}>Удалить категорию</Button>
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant='success' onClick={addTask}>Создать задачу</Button>
+                <Button variant='success' disabled={!title || !deadline} onClick={addTask}>Создать задачу</Button>
                 <Button variant='danger' onClick={onHide}>Отмена</Button>
             </Modal.Footer>
+            <CreateCategory show={categoryVisible} onHide={() => setCategoryVisible(false)} />
         </Modal>
     );
 };

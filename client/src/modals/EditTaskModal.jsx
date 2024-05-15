@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
 import {changeTask} from "../http/tasksApi";
 import {updateTask} from "../store/taskSlice";
+import FormGroup from "react-bootstrap/FormGroup";
 
 const EditTaskModal = ({show, onHide, editingTask}) => {
     const dispatch = useDispatch();
@@ -13,7 +14,9 @@ const EditTaskModal = ({show, onHide, editingTask}) => {
     const [description, setDescription] = useState('')
     const [priority, setPriority] = useState(1)
     const [deadline, setDeadline] = useState('')
-    const [category, setCategory] = useState('')
+    const [category, setCategory] = useState(null);
+    const categories = useSelector(state => state.userCategories.categories)
+    console.log(category)
 
     useEffect(() => {
         if (editingTask) {
@@ -21,7 +24,7 @@ const EditTaskModal = ({show, onHide, editingTask}) => {
             setDescription(editingTask.description);
             setPriority(editingTask.priority);
             setDeadline(moment(editingTask.deadline_at).format('YYYY-MM-DDTHH:mm'));
-            setCategory(editingTask.category);
+            setCategory(editingTask.categoryId);
         }
     }, [editingTask]);
 
@@ -32,7 +35,7 @@ const EditTaskModal = ({show, onHide, editingTask}) => {
                 description: description,
                 priority: priority,
                 deadline_at: new Date(deadline),
-                category: category,
+                categoryId: parseInt(category)
             };
 
             const response = await changeTask(task, editingTask.id);
@@ -88,20 +91,21 @@ const EditTaskModal = ({show, onHide, editingTask}) => {
                                       value={deadline}
                                       onChange={e => setDeadline(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group controlId="formCategory">
+                    <FormGroup>
                         <Form.Label>Категория</Form.Label>
-                        <Form.Control as="select"
-                                      value={category}
-                                      onChange={e => setCategory(e.target.value)}>
-                            <option value="cat1">Категория 1</option>
-                            <option value="cat2">Категория 2</option>
-                            <option value="cat3">Категория 3</option>
+                        <Form.Control as="select" value={category || ''} onChange={(e) => setCategory(e.target.value)}>
+                            <option value="">Select Category</option>
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
                         </Form.Control>
-                    </Form.Group>
+                    </FormGroup>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant='success' onClick={editTaskFunc}>Изменить</Button>
+                <Button variant='success' disabled={!title || !deadline} onClick={editTaskFunc}>Изменить</Button>
                 <Button variant='danger' onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>

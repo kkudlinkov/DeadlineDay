@@ -20,7 +20,7 @@ const Task = sequelize.define('tasks', {
 
 const Category = sequelize.define('categories', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    color: {type: DataTypes.STRING, allowNull: false, defaultValue: '36d174'},
+    color: {type: DataTypes.STRING, allowNull: false, defaultValue: '#36d174'},
     name: {type: DataTypes.STRING, allowNull: false},
 })
 

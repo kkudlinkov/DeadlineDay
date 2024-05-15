@@ -1,10 +1,13 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import authSlice from "./authSlice";
 import taskSlice from "./taskSlice";
+import categorySlice from "./categorySlice";
 
 const rootReducer = combineReducers({
     auth: authSlice,
-    userTasks: taskSlice
+    userTasks: taskSlice,
+    userCategories: categorySlice
+
 })
 
 

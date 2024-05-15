@@ -4,9 +4,10 @@ const {User, Task, Category} = require('../models/models')
 class TaskController {
     async create(req, res, next) {
         try {
-            const {title, description, deadline_at, priority} = req.body;
+            console.log(req)
+            const {title, description, deadline_at, priority, categoryId} = req.body;
             const userId = req.user.id; // assuming req.user is set in the middleware
-            const task = await Task.create({title, description, deadline_at, priority, userId});
+            const task = await Task.create({title, description, deadline_at, priority, categoryId, userId});
             return res.json(task);
         } catch (error) {
             next(ApiError.badRequest(error.message));

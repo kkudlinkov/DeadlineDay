@@ -10,6 +10,8 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import {getTasks} from "./http/tasksApi";
 import {setTasks} from "./store/taskSlice";
+import {setCategories} from "./store/categorySlice";
+import {getCategories} from "./http/categoriesApi";
 
 function App() {
     const dispatch = useDispatch();
@@ -22,9 +24,12 @@ function App() {
                 try {
                     const userData = await check();
                     const tasksData = await getTasks();
+                    const categoriesData = await getCategories();
+                    console.log(categoriesData)
                     dispatch(setIsAuth(true));
                     dispatch(setUser(userData));
                     dispatch(setTasks(tasksData))
+                    dispatch(setCategories(categoriesData))
                 } catch (error) {
                     // Handle error here, e.g. log user out
                     dispatch(setIsAuth(false));
