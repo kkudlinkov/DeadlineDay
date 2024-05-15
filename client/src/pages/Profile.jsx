@@ -24,8 +24,6 @@ const Profile = () => {
 
     const [editingTask, setEditingTask] = useState(null)
 
-    console.log('profile', categories)
-
     const handleDeleteTask = async (task) => {
         if (window.confirm('Are you sure you want to delete this task?')) {
             try {
@@ -100,17 +98,19 @@ const Profile = () => {
                                 <td>{task.status}</td>
                                 <td>
                                     <div className={'d-flex gap-2 align-items-center'}>
-                                        <p className={'m-0'}
-                                        >{categories.find((category) => category.id === task.categoryId)?.name || "Не назначано"}
-                                        </p>
-                                        {task.categoryId && (
-                                            <div style={{
-                                                paddingTop: '0',
-                                                height: '18px',
-                                                width: '18px',
-                                                borderRadius: '50%',
-                                                backgroundColor: `${categories.find((category) => category.id === task.categoryId)?.color}`,
-                                            }}></div>
+                                        {categories.find((category) => category.id === task.categoryId) ? (
+                                            <>
+                                                <p className={'m-0'}>{categories.find((category) => category.id === task.categoryId).name}</p>
+                                                <div style={{
+                                                    paddingTop: '0',
+                                                    height: '18px',
+                                                    width: '18px',
+                                                    borderRadius: '50%',
+                                                    backgroundColor: categories.find((category) => category.id === task.categoryId).color,
+                                                }}></div>
+                                            </>
+                                        ) : (
+                                            <p className={'m-0'}>Не назначано</p>
                                         )}
                                     </div>
                                 </td>

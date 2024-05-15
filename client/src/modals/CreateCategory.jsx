@@ -19,7 +19,6 @@ const CreateCategory = ({show, onHide}) => {
                 name: categoryName,
                 color: selectedColor
             };
-            console.log(category)
             const response = await createCategory(category);
 
             if (response) {

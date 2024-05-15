@@ -53,7 +53,8 @@ const CreateTask = ({show, onHide}) => {
         if (window.confirm('Вы уверены что хотите удалить категорию?')) {
             try {
                 await deleteCategory(category);
-                const index = categories.findIndex((t) => t.id === (parseInt(category)));
+                const categoryId = parseInt(category);
+                const index = categories.findIndex((t) => t.id === categoryId);
                 dispatch(deleteUserCategory(index));
                 alert('Task deleted successfully');
             } catch (error) {
@@ -118,7 +119,8 @@ const CreateTask = ({show, onHide}) => {
                         </Form.Control>
                         <Button variant="primary" className="mr-2" onClick={() => setCategoryVisible(true)}>Добавить
                             категорию</Button>
-                        <Button variant="danger" className="m-2" onClick={deleteSelectCategory} disabled={!category}>Удалить категорию</Button>
+                        <Button variant="danger" className="m-2" onClick={deleteSelectCategory} disabled={!category}>Удалить
+                            категорию</Button>
                     </Form.Group>
                 </Form>
             </Modal.Body>
@@ -126,7 +128,7 @@ const CreateTask = ({show, onHide}) => {
                 <Button variant='success' disabled={!title || !deadline} onClick={addTask}>Создать задачу</Button>
                 <Button variant='danger' onClick={onHide}>Отмена</Button>
             </Modal.Footer>
-            <CreateCategory show={categoryVisible} onHide={() => setCategoryVisible(false)} />
+            <CreateCategory show={categoryVisible} onHide={() => setCategoryVisible(false)}/>
         </Modal>
     );
 };

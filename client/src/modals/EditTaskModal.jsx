@@ -16,7 +16,6 @@ const EditTaskModal = ({show, onHide, editingTask}) => {
     const [deadline, setDeadline] = useState('')
     const [category, setCategory] = useState(null);
     const categories = useSelector(state => state.userCategories.categories)
-    console.log(category)
 
     useEffect(() => {
         if (editingTask) {
@@ -37,6 +36,10 @@ const EditTaskModal = ({show, onHide, editingTask}) => {
                 deadline_at: new Date(deadline),
                 categoryId: parseInt(category)
             };
+
+            if (!categories.some(category => category.id === task.categoryId)) {
+                task.categoryId = null;
+            }
 
             const response = await changeTask(task, editingTask.id);
 

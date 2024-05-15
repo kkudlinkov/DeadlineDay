@@ -24,7 +24,6 @@ const taskSlice = createSlice({
         },
         deleteUserTask(state, action){
             const index = action.payload;
-            console.log(index)
             state.tasks.splice(index, 1); // deleting a task from the tasks array
         }
     }

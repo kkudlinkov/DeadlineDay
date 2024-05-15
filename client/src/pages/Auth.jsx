@@ -10,6 +10,8 @@ import {useDispatch} from "react-redux";
 import {setIsAuth, setUser} from "../store/authSlice";
 import {setTasks} from "../store/taskSlice";
 import {getTasks} from "../http/tasksApi";
+import {setCategories} from "../store/categorySlice";
+import {getCategories} from "../http/categoriesApi";
 
 const Auth = () => {
     const dispatch = useDispatch();
@@ -33,6 +35,8 @@ const Auth = () => {
             dispatch(setUser(user));
             const tasksData = await getTasks();
             dispatch(setTasks(tasksData)); // dispatching setTasks action creator
+            const categoriesData = await getCategories();
+            dispatch(setCategories(categoriesData))
             navigate(MAIN_ROUTE)
         } catch (e){
             alert(e.response.data.message)
