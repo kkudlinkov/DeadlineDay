@@ -36,6 +36,10 @@ class TaskController {
         }
     }
 
+    async getTaskById(id) {
+        return await Task.findOne({where: {id}});
+    }
+
     async update(req, res, next) {
         try {
             const id = req.params.id;

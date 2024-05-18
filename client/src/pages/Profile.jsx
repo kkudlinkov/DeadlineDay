@@ -79,7 +79,7 @@ const Profile = () => {
     return (
         <Container>
             <Row className="align-items-center pt-5">
-                <Col md="8">
+                <Col>
                     <h2>Данные пользователя</h2>
                     <p>
                         <strong>Никнейм:</strong> {user.username}
@@ -166,7 +166,7 @@ const Profile = () => {
                                         }}
                                         variant="primary">Изменить</Button>
                                     <Button onClick={() => handleDeleteTask(task)} variant="danger">
-                                        Delete
+                                        Удалить
                                     </Button>
                                 </td>
                             </tr>

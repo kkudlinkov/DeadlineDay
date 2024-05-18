@@ -27,6 +27,14 @@ class ReminderController {
         }
     }
 
+    async getAllMailReminder() {
+        try {
+            return await Reminder.findAll();
+        } catch (error) {
+            return Promise.reject(new Error('Internal server error'));
+        }
+    }
+
     async getOne(req, res, next) {
         try {
             const id = req.params.id;
@@ -66,6 +74,15 @@ class ReminderController {
             return res.json({message: 'Reminder deleted successfully'});
         } catch (error) {
             next(ApiError.internal(error.message));
+        }
+    }
+
+    async deleteReminder(id) {
+        try {
+            const reminder = await Reminder.findOne({where: {id}});
+            await reminder.destroy()
+        } catch (error){
+            console.error(`Ошибка при удалении напоминания с ID ${id}:`, error.message);
         }
     }
 }

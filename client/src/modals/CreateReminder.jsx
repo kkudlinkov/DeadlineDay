@@ -51,8 +51,8 @@ const CreateReminder = ({show, onHide, editingTask}) => {
             <Modal.Body>
                 <Form className="d-flex flex-column gap-2">
                     <Form.Group controlId="formTitle">
-                        <Form.Label>Придумайте описание вашего напоминание</Form.Label>
-                        <Form.Control type="text" placeholder="Введите имя вашей задачи"
+                        <Form.Label>Заголовок письма</Form.Label>
+                        <Form.Control type="text" placeholder="Заголовок письма"
                                       value={info}
                                       onChange={e => setInfo(e.target.value)}
                         />
@@ -66,7 +66,7 @@ const CreateReminder = ({show, onHide, editingTask}) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant='success' disabled={!info || !remindAt} onClick={addReminder}>Создать задачу</Button>
+                <Button variant='success' disabled={!info || !remindAt} onClick={addReminder}>Создать напоминание</Button>
                 <Button variant='danger' onClick={onHide}>Отмена</Button>
             </Modal.Footer>
         </Modal>
