@@ -12,6 +12,8 @@ import {getTasks} from "./http/tasksApi";
 import {setTasks} from "./store/taskSlice";
 import {setCategories} from "./store/categorySlice";
 import {getCategories} from "./http/categoriesApi";
+import {getReminders} from "./http/reminderApi";
+import {setReminders} from "./store/remindersSlice";
 
 function App() {
     const dispatch = useDispatch();
@@ -25,11 +27,13 @@ function App() {
                     const userData = await check();
                     const tasksData = await getTasks();
                     const categoriesData = await getCategories();
-                    console.log(categoriesData)
+                    const remindersData = await getReminders()
+                    console.log(remindersData)
                     dispatch(setIsAuth(true));
                     dispatch(setUser(userData));
                     dispatch(setTasks(tasksData))
                     dispatch(setCategories(categoriesData))
+                    dispatch(setReminders(remindersData))
                 } catch (error) {
                     // Handle error here, e.g. log user out
                     dispatch(setIsAuth(false));

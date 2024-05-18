@@ -10,27 +10,53 @@ import CreateTask from "../modals/CreateTask";
 import {deleteUserTask} from "../store/taskSlice";
 import {deleteTask} from "../http/tasksApi";
 import EditTaskModal from "../modals/EditTaskModal";
+import Image from "react-bootstrap/Image";
+import {deleteReminder} from "../http/reminderApi";
+import {deleteUserReminder} from "../store/remindersSlice";
+import CreateReminder from "../modals/CreateReminder";
 
 const Profile = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user)
     const tasks = useSelector(state => state.userTasks.tasks)
     const categories = useSelector(state => state.userCategories.categories)
+    const reminders = useSelector(state => state.userReminders.reminders)
 
     const [taskVisible, setTaskVisible] = useState(false)
     const [editTaskVisible, setEditTaskVisible] = useState(false)
+    const [reminderVisible, setReminderVisible] = useState(false)
 
     const activeTasksCount = tasks.length;
 
     const [editingTask, setEditingTask] = useState(null)
 
     const handleDeleteTask = async (task) => {
-        if (window.confirm('Are you sure you want to delete this task?')) {
+        if (window.confirm('Вы точно хотите удалить задачу?')) {
             try {
+                let reminder = reminders.find((r) => r.taskId === task.id);
+                if (reminder) {
+                    await deleteReminder(reminder.id);
+                }
                 await deleteTask(task.id);
                 const index = tasks.findIndex((t) => t.id === task.id);
                 dispatch(deleteUserTask(index));
-                alert('Task deleted successfully');
+                alert('Задача успешно удалена');
+            } catch (error) {
+                console.error(error);
+                alert('Error deleting task');
+            }
+        }
+    };
+
+    const handeDeleteReminder = async (reminder) => {
+        if (window.confirm('Вы дейвстительно хотите удалить напоминание?')) {
+            try {
+                await deleteReminder(reminder.id)
+                console.log(reminder.taskId)
+                const index = reminders.findIndex((r) => r.id === reminder.id);
+                console.log(index)
+                dispatch(deleteUserReminder(index));
+                alert("Напоминание успешно удалено");
             } catch (error) {
                 console.error(error);
                 alert('Error deleting task');
@@ -66,9 +92,7 @@ const Profile = () => {
                     </p>
                 </Col>
                 <Col md="auto" className="flex-column d-flex gap-2 justify-content-center">
-                    <Button variant="primary">Изменить свои данные</Button>
                     <Button onClick={() => setTaskVisible(true)} variant="secondary">Создать задачу</Button>
-                    <Button variant="success">Создать категорию</Button>
                 </Col>
             </Row>
             <Row>
@@ -81,9 +105,8 @@ const Profile = () => {
                             <th>Описание</th>
                             <th>Приоритет</th>
                             <th>Дедлайн</th>
-                            <th>Создана</th>
-                            <th>Статус</th>
                             <th>Категория</th>
+                            <th>Напоминание в</th>
                             <th>Действия</th>
                         </tr>
                         </thead>
@@ -94,8 +117,6 @@ const Profile = () => {
                                 <td>{task.description}</td>
                                 <td>{task.priority}</td>
                                 <td>{moment(task.deadline_at).format('YYYY-MM-DD HH:mm')}</td>
-                                <td>{moment(task.createdAt).format('YYYY-MM-DD HH:mm')}</td>
-                                <td>{task.status}</td>
                                 <td>
                                     <div className={'d-flex gap-2 align-items-center'}>
                                         {categories.find((category) => category.id === task.categoryId) ? (
@@ -114,6 +135,29 @@ const Profile = () => {
                                         )}
                                     </div>
                                 </td>
+                                <td>
+                                    {reminders.filter((reminder) => reminder.taskId === task.id).length > 0 ? (
+                                        <div className={'d-flex align-items-center'}>
+                                            <p className={'m-0'} style={{width: '75%'}}>
+                                                {moment(reminders.find((reminder) => reminder.taskId === task.id).remind_at).format('YYYY-MM-DD HH:mm')}
+                                            </p>
+                                            <Image
+                                                onClick={() => handeDeleteReminder(reminders.find((reminder) => reminder.taskId === task.id))}
+                                                style={{width: '35px', cursor: 'pointer',}}
+                                                src={'https://icon-icons.com/icons2/1150/PNG/512/1486504830-delete-dustbin-empty-recycle-recycling-remove-trash_81361.png'}/>
+                                        </div>
+                                    ) : (
+                                        <div onClick={() => {
+                                            setReminderVisible(true);
+                                            setEditingTask(task)
+                                        }} className={'d-flex align-items-center'}>
+                                            <p className={'m-0'} style={{width: '75%'}}>Не назначано</p>
+                                            <Image
+                                                style={{width: '35px', cursor: 'pointer'}}
+                                                src={'https://icon-icons.com/icons2/916/PNG/512/Plus_icon-icons.com_71848.png'}/>
+                                        </div>
+                                    )}
+                                </td>
                                 <td className='gap-2'>
                                     <Button
                                         onClick={() => {
@@ -131,12 +175,26 @@ const Profile = () => {
                     </Table>
                 </Col>
             </Row>
-            <CreateTask show={taskVisible} onHide={() => setTaskVisible(false)}/>
-            <EditTaskModal show={editTaskVisible} onHide={() => {
-                setEditTaskVisible(false);
-                setEditingTask(null)
-            }
-            } editingTask={editingTask}/>
+
+            <CreateTask
+                show={taskVisible}
+                onHide={() => setTaskVisible(false)}
+            />
+
+            <EditTaskModal
+                show={editTaskVisible}
+                onHide={() => {
+                    setEditTaskVisible(false);
+                    setEditingTask(null)
+                }
+                } editingTask={editingTask}/>
+
+            <CreateReminder
+                show={reminderVisible}
+                onHide={() => setReminderVisible(false)}
+                editingTask={editingTask}
+            />
+
         </Container>
     );
 };

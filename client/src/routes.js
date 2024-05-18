@@ -1,6 +1,6 @@
 import {CALENDAR_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE, USERPROFILE_ROUTE} from "./utils/consts";
 import Profile from "./pages/Profile";
-import Calendar from "./pages/Calendar";
+import CalendarPage from "./pages/CalendarPage";
 import Main from "./pages/Main";
 import Auth from "./pages/Auth";
 
@@ -11,7 +11,7 @@ export const authRoutes = [
     },
     {
         path: CALENDAR_ROUTE,
-        Component: Calendar
+        Component: CalendarPage
     },
 ]
 

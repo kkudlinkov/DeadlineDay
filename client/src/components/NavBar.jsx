@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {Link, useNavigate} from "react-router-dom";
-import {LOGIN_ROUTE, MAIN_ROUTE, USERPROFILE_ROUTE} from "../utils/consts";
+import {CALENDAR_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, USERPROFILE_ROUTE} from "../utils/consts";
 import Button from "react-bootstrap/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsAuth, setUser} from "../store/authSlice";
@@ -34,12 +34,18 @@ const NavBar = () => {
                     {isAuth && (
                         <>
                             <Button
+                                to={CALENDAR_ROUTE}
+                                variant={'outline-info'}
+                                onClick={() => navigate(CALENDAR_ROUTE)}>
+                                Календарь
+                            </Button>
+                            <Button
                                 to={USERPROFILE_ROUTE}
                                 variant={'light'}
                                 onClick={() => navigate(USERPROFILE_ROUTE)}>
                                 {user.username}
                             </Button>
-                            <Button onClick={logOut} variant={"outline-light"}>Выйти</Button>
+                            <Button onClick={logOut} variant={"danger"}>Выйти</Button>
                         </>
                     )}
                 </Nav>
