@@ -1,16 +1,26 @@
 version: '3.8'
 
 services:
-  db:
-    container_name: note_db
-    image: postgres:13.1-alpine
+  app:
+    container_name: node-app
+    build: .
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=DeadlineDay
+      - .:/usr/src/app
     ports:
-      - "5432"
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    container_name: postgres-db
+    image: postgres:14
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: DeadlineDay
+    ports:
+      - "5432:5432"
+
 volumes:
-  postgres_data:
+  postgres-data:
