@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:14
+FROM node:16
 
 # Set the working directory in the container to /usr/src/app
 WORKDIR /usr/src/app
@@ -9,8 +9,6 @@ COPY package*.json ./
 
 # Install any needed packages specified in package.json
 RUN npm install
-
-RUN npm rebuild bcrypt --build-from-source
 
 # Bundle app source inside the Docker image
 COPY . .
