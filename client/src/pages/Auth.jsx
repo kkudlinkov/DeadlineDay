@@ -12,6 +12,8 @@ import {setTasks} from "../store/taskSlice";
 import {getTasks} from "../http/tasksApi";
 import {setCategories} from "../store/categorySlice";
 import {getCategories} from "../http/categoriesApi";
+import {getReminders} from "../http/reminderApi";
+import {setReminders} from "../store/remindersSlice";
 
 const Auth = () => {
     const dispatch = useDispatch();
@@ -37,6 +39,8 @@ const Auth = () => {
             dispatch(setTasks(tasksData)); // dispatching setTasks action creator
             const categoriesData = await getCategories();
             dispatch(setCategories(categoriesData))
+            const remindersData = await getReminders();
+            dispatch(setReminders(remindersData))
             navigate(MAIN_ROUTE)
         } catch (e){
             alert(e.response.data.message)
