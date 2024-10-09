@@ -48,7 +48,7 @@ async function sendMail() {
                     html: `
                         <p>Вы должны сделать задачу: ${taskData.title}</p>
                         <p>Содержание вашей задачи: ${taskData.description}</p>
-                        <p>Задача должна быть выполнена не позднее: ${task.deadlineAt}</p>
+                        <p>Задача должна быть выполнена не позднее: ${task.deadline_at}</p>
                         <p>Важость задачи: ${task.priority}</p>`};
 
                 // Отправляем сообщение
