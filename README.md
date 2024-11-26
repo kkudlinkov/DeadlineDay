@@ -73,3 +73,19 @@ quadrantChart
     Conduct User Feedback Survey: [0.2, 0.3]
     Improve Performance Metrics: [0.59, 0.8]
 ```
+
+```mermaid
+gitGraph
+  commit id: "Инициализация проекта" tag: "v0.0.1"
+  branch develop
+  commit id: "Настройка серверного проекта" tag: "v0.1.0"
+  commit id: "Подключение к базе данных PostgreSQL" tag: "v0.2.0"
+  commit id: "Реализация RESTful API" tag: "v0.3.0"
+  commit id: "Реализация операций CRUD для задач" type: REVERSE tag: "v0.3.1"
+  commit id: "Настройка клиентского проекта" tag: "v0.4.0"
+  commit id: "Создание пользовательского интерфейса" type: HIGHLIGHT tag: "0.5.0"
+  commit id: "Реализация аутентификации пользователей" tag: "v0.6.0"
+  checkout main
+  commit id: "Деплой версии 1.0.0" tag: "v1.0.0"
+  commit id: "Деплой версии 1.1.0" tag: "v1.1.0"
+```
