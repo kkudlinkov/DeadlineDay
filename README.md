@@ -56,4 +56,19 @@ journey
       Выйти из системы: 5: Пользователь
       Закрыть приложение: 5: Пользователь
 ```
-
+```mermaid
+quadrantChart
+    title Task Prioritization in Task Planner
+    x-axis Low Reach --> High Reach
+    y-axis Low Engagement --> High Engagement
+    quadrant-1 Планировать в ближайшее время
+    quadrant-2 Реализовать немедленно
+    quadrant-3 Возможно стоит отказаться
+    quadrant-4 Требуется тщательного анализа
+    Task A: [0.3, 0.6]
+    Task B: [0.8, 0.9]
+    Task C: [0.5, 0.4]
+    Task D: [0.2, 0.3]
+    Task E: [0.7, 0.5]
+    Task F: [0.4, 0.8]
+```
